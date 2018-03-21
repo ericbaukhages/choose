@@ -1,10 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"log"
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 
 	flag "github.com/ogier/pflag"
 )
@@ -21,8 +25,9 @@ func printUsage() {
 }
 
 func main() {
-	flag.Parse()
 	CallClear()
+	readLines()
+	flag.Parse()
 
 	if flag.NFlag() == 0 {
 		printUsage()
@@ -57,5 +62,32 @@ func CallClear() {
 		value()
 	} else {
 		panic("Your platform is unsupported, I can't clear the screen!")
+	}
+}
+
+func readLines() {
+	f, err := os.OpenFile("/Users/ebaukhages/Documents/scripts/tmux.sessions.log", os.O_RDONLY, os.ModePerm)
+
+	if err != nil {
+		log.Fatalf("open file error: %v", err)
+	}
+
+	defer f.Close()
+
+	rd := bufio.NewReader(f)
+	for {
+		line, err := rd.ReadString('\n')
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+
+			log.Fatalf("read file line error: %v", err)
+			return
+		}
+
+		values := strings.Split(line, " ")
+		sessionName, path := values[0], values[1]
+		fmt.Printf("sessionName: %s, path: %s", sessionName, path)
 	}
 }
