@@ -11,6 +11,12 @@ var (
 	session string
 )
 
+func printUsage() {
+	fmt.Printf("Usage: %s [options]\n", os.Args[0])
+	fmt.Println("Options:")
+	flag.PrintDefaults()
+}
+
 func main() {
 	flag.Parse()
 
@@ -24,10 +30,4 @@ func main() {
 
 func init() {
 	flag.StringVarP(&session, "session", "s", "", "Session")
-}
-
-func printUsage() {
-	fmt.Printf("Usage: %s [options]\n", os.Args[0])
-	fmt.Println("Options:")
-	flag.PrintDefaults()
 }
