@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
 
 	"github.com/manifoldco/promptui"
 )
@@ -25,24 +24,23 @@ func main() {
 		Items: keys,
 	}
 
-	_, session, err := prompt.Run()
+	_, name, err := prompt.Run()
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
 		return
 	}
 
-	path := config[session]
-	// fmt.Printf("You choose %s and will go to %s\n", session, path)
+	path := config[name]
 
-	c := exec.Command(sessionScript, session, path, "1")
-	out, err := c.Output()
-
-	if err != nil {
-		fmt.Printf("Command failed: %s", out)
-		fmt.Printf("         error: %s\n", err.Error())
-		return
+	session := Session{
+		path:    path,
+		session: name,
+		log:     sessionScript,
+		script:  logFile,
 	}
+
+	session.Start()
 }
 
 func init() {
