@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"os/exec"
 
-	flag "github.com/ogier/pflag"
+	"github.com/manifoldco/promptui"
 )
 
 var (
@@ -14,14 +14,35 @@ var (
 func main() {
 	CallClear()
 
-	logFiles := "/Users/ebaukhages/Documents/scripts/tmux.sessions.log"
+	logFile := "/Users/ebaukhages/Documents/scripts/tmux.sessions.log"
+	sessionScript := "/Users/ebaukhages/Documents/scripts/session.sh"
 
-	config := ParseConfig(logFiles)
-	fmt.Printf("%s", config)
-
+	config := ParseConfig(logFile)
 	keys := MakeKeys(config)
-	fmt.Printf("%s", keys)
 
+	prompt := promptui.Select{
+		Label: "Select Session",
+		Items: keys,
+	}
+
+	_, session, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return
+	}
+
+	path := config[session]
+	// fmt.Printf("You choose %s and will go to %s\n", session, path)
+
+	c := exec.Command(sessionScript, session, path, "1")
+	out, err := c.Output()
+
+	if err != nil {
+		fmt.Printf("Command failed: %s", out)
+		fmt.Printf("         error: %s\n", err.Error())
+		return
+	}
 }
 
 func init() {
