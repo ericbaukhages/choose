@@ -57,8 +57,8 @@ func CallClear() {
 	}
 }
 
-// initialzes the CallClear necessary components
-func init() {
+// CallClearInit function initialzes the CallClear necessary components
+func CallClearInit() {
 	// set up the clear func
 	clear = make(map[string]func())
 	clear["linux"] = func() {

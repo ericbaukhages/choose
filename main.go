@@ -29,5 +29,6 @@ func main() {
 }
 
 func init() {
+	CallClearInit()
 	flag.StringVarP(&session, "session", "s", "", "Session")
 }
