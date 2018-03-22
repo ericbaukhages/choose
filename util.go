@@ -18,7 +18,7 @@ var (
 )
 
 // ParseConfig function reads lines from a log file
-func ParseConfig(logFile string) {
+func ParseConfig(logFile string) map[string]string {
 	f, err := os.OpenFile(logFile, os.O_RDONLY, os.ModePerm)
 
 	if err != nil {
@@ -27,6 +27,7 @@ func ParseConfig(logFile string) {
 
 	defer f.Close()
 
+	config := make(map[string]string)
 	rd := bufio.NewReader(f)
 	for {
 		line, err := rd.ReadString('\n')
@@ -36,13 +37,14 @@ func ParseConfig(logFile string) {
 			}
 
 			log.Fatalf("read file line error: %v", err)
-			return
 		}
 
 		values := strings.Split(line, " ")
-		sessionName, path := values[0], values[1]
-		fmt.Printf("sessionName: %s, path: %s", sessionName, path)
+		name, path := values[0], strings.TrimSpace(values[1])
+		config[name] = path
 	}
+
+	return config
 }
 
 // CallClear function clears the terminal screen

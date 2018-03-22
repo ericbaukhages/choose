@@ -12,10 +12,12 @@ var (
 )
 
 func main() {
+	CallClear()
+
 	logFiles := "/Users/ebaukhages/Documents/scripts/tmux.sessions.log"
 
-	CallClear()
-	ParseConfig(logFiles)
+	config := ParseConfig(logFiles)
+	fmt.Printf("%s", config)
 	flag.Parse()
 
 	if flag.NFlag() == 0 {
