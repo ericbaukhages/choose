@@ -80,3 +80,16 @@ func PrintUsage() {
 	fmt.Println("Options:")
 	flag.PrintDefaults()
 }
+
+// MakeKeys function makes keys from string map
+func MakeKeys(config map[string]string) []string {
+	keys := make([]string, len(config))
+
+	i := 0
+	for k := range config {
+		keys[i] = k
+		i++
+	}
+
+	return keys
+}

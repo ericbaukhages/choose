@@ -18,6 +18,10 @@ func main() {
 
 	config := ParseConfig(logFiles)
 	fmt.Printf("%s", config)
+
+	keys := MakeKeys(config)
+	fmt.Printf("%s", keys)
+
 	flag.Parse()
 
 	if flag.NFlag() == 0 {
