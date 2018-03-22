@@ -22,17 +22,8 @@ func main() {
 	keys := MakeKeys(config)
 	fmt.Printf("%s", keys)
 
-	flag.Parse()
-
-	if flag.NFlag() == 0 {
-		PrintUsage()
-		os.Exit(1)
-	}
-
-	fmt.Printf("Loading session: %s\n", session)
 }
 
 func init() {
 	CallClearInit()
-	flag.StringVarP(&session, "session", "s", "", "Session")
 }

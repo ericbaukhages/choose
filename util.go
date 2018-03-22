@@ -2,15 +2,12 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"log"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
-
-	flag "github.com/ogier/pflag"
 )
 
 var (
@@ -72,13 +69,6 @@ func CallClearInit() {
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	}
-}
-
-// PrintUsage function prints command usage
-func PrintUsage() {
-	fmt.Printf("Usage: %s [options]\n", os.Args[0])
-	fmt.Println("Options:")
-	flag.PrintDefaults()
 }
 
 // MakeKeys function makes keys from string map
