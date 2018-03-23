@@ -12,7 +12,13 @@ type Command struct {
 }
 
 func (c *Command) run() ([]byte, error) {
-	command := exec.Command(c.args[0], c.args[1:]...)
+	var command *exec.Cmd
+
+	if len(c.args) > 1 {
+		command = exec.Command(c.args[0], c.args[1:]...)
+	} else {
+		command = exec.Command(c.args[0])
+	}
 	out, err := command.Output()
 
 	return out, err
