@@ -14,18 +14,7 @@ type Command struct {
 }
 
 func (c *Command) run() ([]byte, error) {
-	var command *exec.Cmd
-
-	if len(c.args) > 1 {
-		command = exec.Command(c.args[0], c.args[1:]...)
-	} else {
-		command = exec.Command(c.args[0])
-	}
-
-	if c.dir != "" {
-		command.Dir = c.dir
-	}
-
+	command := create(c.args, c.dir)
 	out, err := command.Output()
 
 	return out, err
@@ -45,4 +34,20 @@ func (c *Command) exec() (string, error) {
 	}
 
 	return "Successfully attached", nil
+}
+
+func create(args []string, dir string) *exec.Cmd {
+	var command *exec.Cmd
+
+	if len(args) > 1 {
+		command = exec.Command(args[0], args[1:]...)
+	} else {
+		command = exec.Command(args[0])
+	}
+
+	if dir != "" {
+		command.Dir = dir
+	}
+
+	return command
 }
