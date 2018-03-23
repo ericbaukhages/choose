@@ -3,8 +3,6 @@ package main
 import (
 	"errors"
 	"os"
-	"os/exec"
-	"syscall"
 )
 
 // Session holds all the stuff to start these sessions
@@ -24,23 +22,29 @@ func (s *Session) Start() (string, error) {
 	}
 
 	// TODO: create session in `s.path`
-	_, _ = runCommand([]string{
-		"tmux",
-		"new-session",
-		"-d",
-		"-s",
-		s.session,
-	})
+	create := Command{
+		[]string{
+			"tmux",
+			"new-session",
+			"-d",
+			"-s",
+			s.session,
+		},
+	}
+	_, _ = create.run()
 
 	// TODO: Properly handle errors from session creation
 	// if err != nil {
 	// 	return "create session failed", err
 	// }
 
-	executeCommand([]string{
-		"tmux",
-		"attach",
-	})
+	attach := Command{
+		[]string{
+			"tmux",
+			"attach",
+		},
+	}
+	attach.exec()
 
 	return "Session started successfully", nil
 }
@@ -67,27 +71,4 @@ func (s *Session) valid() (bool, error) {
 	// }
 
 	return true, nil
-}
-
-func runCommand(args []string) ([]byte, error) {
-	c := exec.Command(args[0], args[1:]...)
-	out, err := c.Output()
-
-	return out, err
-}
-
-func executeCommand(args []string) (string, error) {
-	binary, lookErr := exec.LookPath("tmux")
-	if lookErr != nil {
-		return "Unable to find tmux", lookErr
-	}
-
-	env := os.Environ()
-
-	execErr := syscall.Exec(binary, args, env)
-	if execErr != nil {
-		return "Unable to run command", execErr
-	}
-
-	return "Successfully attached", nil
 }
