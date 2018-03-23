@@ -6,6 +6,10 @@ import (
 	"runtime"
 )
 
+var (
+	clear map[string]func()
+)
+
 // CallClear function clears the terminal screen
 func CallClear() {
 	value, ok := clear[runtime.GOOS]

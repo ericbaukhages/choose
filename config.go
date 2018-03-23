@@ -8,10 +8,6 @@ import (
 	"strings"
 )
 
-var (
-	clear map[string]func()
-)
-
 // Config stores configuration data as well as its location
 type Config struct {
 	location string
