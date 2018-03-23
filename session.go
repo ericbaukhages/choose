@@ -12,7 +12,7 @@ type Session struct {
 	session string
 }
 
-// Start function starts the session
+// Start starts the session
 func (s *Session) Start() (string, error) {
 	// TODO: convert potential partial path to full path
 

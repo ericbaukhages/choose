@@ -10,7 +10,7 @@ var (
 	clear map[string]func()
 )
 
-// CallClear function clears the terminal screen
+// CallClear clears the terminal screen
 func CallClear() {
 	value, ok := clear[runtime.GOOS]
 	if ok {
@@ -20,7 +20,7 @@ func CallClear() {
 	}
 }
 
-// CallClearInit function initialzes the CallClear necessary components
+// CallClearInit initialzes the CallClear necessary components
 func CallClearInit() {
 	// set up the clear func
 	clear = make(map[string]func())

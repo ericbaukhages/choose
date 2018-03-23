@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"syscall"
@@ -33,7 +34,7 @@ func (c *Command) run() ([]byte, error) {
 func (c *Command) exec() (string, error) {
 	binary, lookErr := exec.LookPath(c.args[0])
 	if lookErr != nil {
-		return "Unable to find tmux", lookErr
+		return fmt.Sprintf("Unable to find %s", c.args[0]), lookErr
 	}
 
 	env := os.Environ()
