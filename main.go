@@ -9,14 +9,14 @@ import (
 func main() {
 	CallClear()
 
-	configFile := "/Users/ebaukhages/Documents/scripts/tmux.sessions.log"
-
-	config := ParseConfig(configFile)
-	keys := MakeKeys(config)
+	config := Config{
+		location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
+	}
+	config.Parse()
 
 	prompt := promptui.Select{
 		Label: "Select Session",
-		Items: keys,
+		Items: config.keys,
 	}
 
 	_, name, err := prompt.Run()
@@ -26,12 +26,12 @@ func main() {
 		return
 	}
 
-	path := config[name]
+	path := config.values[name]
 
 	session := Session{
 		path:    path,
 		session: name,
-		config:  configFile,
+		config:  config,
 	}
 
 	_, err = session.Start()

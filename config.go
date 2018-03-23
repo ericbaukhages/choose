@@ -12,8 +12,20 @@ var (
 	clear map[string]func()
 )
 
-// ParseConfig function reads lines from a log file
-func ParseConfig(logFile string) map[string]string {
+// Config stores configuration data as well as its location
+type Config struct {
+	location string
+	values   map[string]string
+	keys     []string
+}
+
+// Parse sets up the config
+func (c *Config) Parse() {
+	c.values = parseConfig(c.location)
+	c.keys = makeKeys(c.values)
+}
+
+func parseConfig(logFile string) map[string]string {
 	f, err := os.OpenFile(logFile, os.O_RDONLY, os.ModePerm)
 
 	if err != nil {
@@ -42,8 +54,7 @@ func ParseConfig(logFile string) map[string]string {
 	return config
 }
 
-// MakeKeys function makes keys from string map
-func MakeKeys(config map[string]string) []string {
+func makeKeys(config map[string]string) []string {
 	keys := make([]string, len(config))
 
 	i := 0

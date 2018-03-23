@@ -9,7 +9,7 @@ import (
 
 // Session holds all the stuff to start these sessions
 type Session struct {
-	config  string
+	config  Config
 	path    string
 	session string
 }
