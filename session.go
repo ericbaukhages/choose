@@ -24,7 +24,7 @@ func (s *Session) Start() (string, error) {
 	}
 
 	// TODO: create session in `s.path`
-	_, _ = s.run([]string{
+	_, _ = runCommand([]string{
 		"tmux",
 		"new-session",
 		"-d",
@@ -37,7 +37,7 @@ func (s *Session) Start() (string, error) {
 	// 	return "create session failed", err
 	// }
 
-	s.exec([]string{
+	executeCommand([]string{
 		"tmux",
 		"attach",
 	})
@@ -61,7 +61,7 @@ func (s *Session) valid() (bool, error) {
 	// 	"#S",
 	// }
 
-	// out, err := s.exec(runArgs)
+	// out, err := runCommand(runArgs)
 	// if err != nil {
 	// 	return false, errors.New("tmux list-sessions command failed")
 	// }
@@ -69,14 +69,14 @@ func (s *Session) valid() (bool, error) {
 	return true, nil
 }
 
-func (s *Session) run(args []string) ([]byte, error) {
+func runCommand(args []string) ([]byte, error) {
 	c := exec.Command(args[0], args[1:]...)
 	out, err := c.Output()
 
 	return out, err
 }
 
-func (s *Session) exec(args []string) (string, error) {
+func executeCommand(args []string) (string, error) {
 	binary, lookErr := exec.LookPath("tmux")
 	if lookErr != nil {
 		return "Unable to find tmux", lookErr
