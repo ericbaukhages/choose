@@ -13,10 +13,9 @@ var (
 func main() {
 	CallClear()
 
-	logFile := "/Users/ebaukhages/Documents/scripts/tmux.sessions.log"
-	sessionScript := "/Users/ebaukhages/Documents/scripts/session.sh"
+	configFile := "/Users/ebaukhages/Documents/scripts/tmux.sessions.log"
 
-	config := ParseConfig(logFile)
+	config := ParseConfig(configFile)
 	keys := MakeKeys(config)
 
 	prompt := promptui.Select{
@@ -36,11 +35,15 @@ func main() {
 	session := Session{
 		path:    path,
 		session: name,
-		log:     sessionScript,
-		script:  logFile,
+		config:  configFile,
 	}
 
-	session.Start()
+	_, err = session.Start()
+
+	if err != nil {
+		fmt.Printf("Session failed %v\n", err)
+		return
+	}
 }
 
 func init() {
