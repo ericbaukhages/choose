@@ -9,6 +9,7 @@ import (
 // Command provides useful wrapper for system calls
 type Command struct {
 	args []string
+	dir  string
 }
 
 func (c *Command) run() ([]byte, error) {
@@ -19,6 +20,11 @@ func (c *Command) run() ([]byte, error) {
 	} else {
 		command = exec.Command(c.args[0])
 	}
+
+	if c.dir != "" {
+		command.Dir = c.dir
+	}
+
 	out, err := command.Output()
 
 	return out, err

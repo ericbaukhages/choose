@@ -23,7 +23,7 @@ func (s *Session) Start() (string, error) {
 
 	// TODO: create session in `s.path`
 	create := Command{
-		[]string{
+		args: []string{
 			"tmux",
 			"new-session",
 			"-d",
@@ -39,7 +39,7 @@ func (s *Session) Start() (string, error) {
 	// }
 
 	attach := Command{
-		[]string{
+		args: []string{
 			"tmux",
 			"attach",
 		},
