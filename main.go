@@ -6,10 +6,6 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-var (
-	session string
-)
-
 func main() {
 	CallClear()
 
