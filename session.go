@@ -21,7 +21,6 @@ func (s *Session) Start() (string, error) {
 		return "Session was invalid", err
 	}
 
-	// TODO: create session in `s.path`
 	create := Command{
 		args: []string{
 			"tmux",
@@ -29,6 +28,9 @@ func (s *Session) Start() (string, error) {
 			"-d",
 			"-s",
 			s.session,
+		},
+		env: map[string]string{
+			"ORIG_PWD_FOR_TMUX": s.path,
 		},
 	}
 	_, _ = create.run()

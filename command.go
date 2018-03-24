@@ -11,10 +11,18 @@ import (
 type Command struct {
 	args []string
 	dir  string
+	env  map[string]string
 }
 
 func (c *Command) run() ([]byte, error) {
 	command := create(c.args, c.dir)
+
+	if c.env != nil {
+		for k, v := range c.env {
+			addEnv(command, k, v)
+		}
+	}
+
 	out, err := command.Output()
 
 	return out, err
@@ -34,6 +42,12 @@ func (c *Command) exec() (string, error) {
 	}
 
 	return "Successfully attached", nil
+}
+
+func addEnv(cmd *exec.Cmd, key string, value string) {
+	env := os.Environ()
+	env = append(env, fmt.Sprintf("%s=%s", key, value))
+	cmd.Env = env
 }
 
 func create(args []string, dir string) *exec.Cmd {
