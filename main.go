@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -12,16 +13,30 @@ func main() {
 	}
 	config.Parse()
 
-	ui := Interface{
-		config: config,
-	}
-	name, err := ui.Run()
+	var (
+		name string
+		err  error
+	)
 
-	if err != nil {
-		fmt.Printf("Prompt failed: %v\n", err)
+	if len(os.Args) == 1 {
+		ui := Interface{
+			config: config,
+		}
+		name, err = ui.Run()
+
+		if err != nil {
+			fmt.Printf("Prompt failed: %v\n", err)
+		}
+	} else {
+		name = os.Args[1]
 	}
 
 	path := config.values[name]
+
+	if path == "" {
+		fmt.Printf("No session called: %s. Exiting.\n", name)
+		return
+	}
 
 	session := Session{
 		path:    path,
