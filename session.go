@@ -28,9 +28,8 @@ func (s *Session) Start() (string, error) {
 			"-d",
 			"-s",
 			s.session,
-		},
-		env: map[string]string{
-			"ORIG_PWD_FOR_TMUX": s.path,
+			"-c",
+			s.path,
 		},
 	}
 	_, _ = create.run()
