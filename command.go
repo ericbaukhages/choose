@@ -10,18 +10,10 @@ import (
 // Command provides useful wrapper for system calls
 type Command struct {
 	args []string
-	dir  string
-	env  map[string]string
 }
 
 func (c *Command) run() ([]byte, error) {
-	command := create(c.args, c.dir)
-
-	if c.env != nil {
-		for k, v := range c.env {
-			addEnv(command, k, v)
-		}
-	}
+	command := create(c.args)
 
 	out, err := command.Output()
 
@@ -44,23 +36,13 @@ func (c *Command) exec() (string, error) {
 	return "Successfully attached", nil
 }
 
-func addEnv(cmd *exec.Cmd, key string, value string) {
-	env := os.Environ()
-	env = append(env, fmt.Sprintf("%s=%s", key, value))
-	cmd.Env = env
-}
-
-func create(args []string, dir string) *exec.Cmd {
+func create(args []string) *exec.Cmd {
 	var command *exec.Cmd
 
 	if len(args) > 1 {
 		command = exec.Command(args[0], args[1:]...)
 	} else {
 		command = exec.Command(args[0])
-	}
-
-	if dir != "" {
-		command.Dir = dir
 	}
 
 	return command
