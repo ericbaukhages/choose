@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -58,6 +59,8 @@ func makeKeys(config map[string]string) []string {
 		keys[i] = k
 		i++
 	}
+
+	sort.Strings(keys)
 
 	return keys
 }

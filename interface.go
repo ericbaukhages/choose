@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/manifoldco/promptui"
 )
 
@@ -10,11 +12,45 @@ type Interface struct {
 	prompt promptui.Select
 }
 
+// Item stores data used by prompt
+type Item struct {
+	Name string
+	Path string
+}
+
 // Run starts the interface
 func (i *Interface) Run() (string, error) {
+
+	templates := &promptui.SelectTemplates{
+		Active:   "* {{ .Name }}",
+		Inactive: "  {{ .Name }}",
+		Selected: "* {{ .Name }}",
+		Details:  "Path: {{ .Path }}",
+	}
+
+	items := make([]Item, len(i.config.keys))
+	for index, key := range i.config.keys {
+		items[index] = Item{
+			Name: key,
+			Path: i.config.values[key],
+		}
+	}
+
+	searcher := func(input string, index int) bool {
+		item := items[index]
+		name := strings.Replace(strings.ToLower(item.Name), " ", "", -1)
+		input = strings.Replace(strings.ToLower(input), " ", "", -1)
+
+		return strings.Contains(name, input)
+	}
+
 	prompt := promptui.Select{
-		Label: "Select Session",
-		Items: i.config.keys,
+		Label:             "Select Session",
+		Items:             items,
+		Templates:         templates,
+		Size:              4,
+		Searcher:          searcher,
+		StartInSearchMode: true,
 	}
 	i.prompt = prompt
 
