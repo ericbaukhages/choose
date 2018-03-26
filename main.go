@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/manifoldco/promptui"
 )
 
 func main() {
@@ -14,16 +12,13 @@ func main() {
 	}
 	config.Parse()
 
-	prompt := promptui.Select{
-		Label: "Select Session",
-		Items: config.keys,
+	ui := Interface{
+		config: config,
 	}
-
-	_, name, err := prompt.Run()
+	name, err := ui.Run()
 
 	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
+		fmt.Printf("Prompt failed: %v\n", err)
 	}
 
 	path := config.values[name]
@@ -33,7 +28,6 @@ func main() {
 		session: name,
 		config:  config,
 	}
-
 	_, err = session.Start()
 
 	if err != nil {
