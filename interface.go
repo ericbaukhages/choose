@@ -22,10 +22,11 @@ type Item struct {
 func (i *Interface) Run() (string, error) {
 
 	templates := &promptui.SelectTemplates{
-		Active:   "* {{ .Name }}",
-		Inactive: "  {{ .Name }}",
-		Selected: "* {{ .Name }}",
-		Details:  "Path: {{ .Path }}",
+		Active:   "* {{ .Name | yellow }}",
+		Inactive: "  {{ .Name | cyan }}",
+		Selected: "* {{ .Name | red }}",
+
+		Details: "Path: {{ .Path }}",
 	}
 
 	items := make([]Item, len(i.config.keys))
