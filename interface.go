@@ -55,10 +55,12 @@ func (i *Interface) Run() (string, error) {
 	}
 	i.prompt = prompt
 
-	_, name, err := i.prompt.Run()
+	index, _, err := i.prompt.Run()
+
+	item := items[index]
 
 	if err != nil {
 		return "", err
 	}
-	return name, nil
+	return item.Name, nil
 }
