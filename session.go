@@ -43,6 +43,8 @@ func (s *Session) Start() (string, error) {
 		args: []string{
 			"tmux",
 			"attach",
+			"-t",
+			s.session,
 		},
 	}
 	attach.exec()
