@@ -1,11 +1,11 @@
-package main
+package choose
 
 import (
 	"fmt"
 	"os"
 )
 
-func main() {
+func run() {
 	CallClear()
 
 	config := Config{
