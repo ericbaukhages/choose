@@ -1,6 +1,7 @@
 package choose
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"runtime"
@@ -35,4 +36,14 @@ func CallClearInit() {
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	}
+}
+
+// ValidPath checks if given path is valid
+func ValidPath(path string) error {
+	stat, err := os.Stat(path)
+	if !(err == nil && stat.IsDir()) {
+		return errors.New("path is not valid directory")
+	}
+
+	return nil
 }

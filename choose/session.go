@@ -2,7 +2,6 @@ package choose
 
 import (
 	"errors"
-	"os"
 )
 
 // Session holds all the stuff to start these sessions
@@ -55,8 +54,8 @@ func (s *Session) Start() (string, error) {
 func (s *Session) valid() (bool, error) {
 
 	// check if is valid directory
-	stat, err := os.Stat(s.Path)
-	if !(err == nil && stat.IsDir()) {
+	err := ValidPath(s.Path)
+	if err != nil {
 		return false, errors.New("path is not valid directory")
 	}
 
