@@ -9,7 +9,7 @@ func run() {
 	CallClear()
 
 	config := Config{
-		location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
+		Location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
 	}
 	config.Parse()
 
@@ -20,7 +20,7 @@ func run() {
 
 	if len(os.Args) == 1 {
 		ui := Interface{
-			config: config,
+			Config: config,
 		}
 		name, err = ui.Run()
 
@@ -31,7 +31,7 @@ func run() {
 		name = os.Args[1]
 	}
 
-	path := config.values[name]
+	path := config.Values[name]
 
 	if path == "" {
 		fmt.Printf("No session called: %s. Exiting.\n", name)
@@ -39,9 +39,9 @@ func run() {
 	}
 
 	session := Session{
-		path:    path,
-		session: name,
-		config:  config,
+		Path:    path,
+		Session: name,
+		Config:  config,
 	}
 	_, err = session.Start()
 

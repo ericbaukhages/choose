@@ -11,15 +11,15 @@ import (
 
 // Config stores configuration data as well as its location
 type Config struct {
-	location string
-	values   map[string]string
+	Location string
+	Values   map[string]string
 	keys     []string
 }
 
 // Parse sets up the config
 func (c *Config) Parse() {
-	c.values = parseConfig(c.location)
-	c.keys = makeKeys(c.values)
+	c.Values = parseConfig(c.Location)
+	c.keys = makeKeys(c.Values)
 }
 
 func parseConfig(logFile string) map[string]string {

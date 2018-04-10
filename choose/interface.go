@@ -8,7 +8,7 @@ import (
 
 // Interface manages the UI interface
 type Interface struct {
-	config Config
+	Config Config
 	prompt promptui.Select
 }
 
@@ -29,11 +29,11 @@ func (i *Interface) Run() (string, error) {
 		Details: "Path: {{ .Path }}",
 	}
 
-	items := make([]Item, len(i.config.keys))
-	for index, key := range i.config.keys {
+	items := make([]Item, len(i.Config.keys))
+	for index, key := range i.Config.keys {
 		items[index] = Item{
 			Name: key,
-			Path: i.config.values[key],
+			Path: i.Config.Values[key],
 		}
 	}
 

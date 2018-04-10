@@ -7,9 +7,9 @@ import (
 
 // Session holds all the stuff to start these sessions
 type Session struct {
-	config  Config
-	path    string
-	session string
+	Config  Config
+	Path    string
+	Session string
 }
 
 // Start starts the session
@@ -27,9 +27,9 @@ func (s *Session) Start() (string, error) {
 			"new-session",
 			"-d",
 			"-s",
-			s.session,
+			s.Session,
 			"-c",
-			s.path,
+			s.Path,
 		},
 	}
 	_, _ = create.run()
@@ -44,7 +44,7 @@ func (s *Session) Start() (string, error) {
 			"tmux",
 			"attach",
 			"-t",
-			s.session,
+			s.Session,
 		},
 	}
 	attach.exec()
@@ -55,7 +55,7 @@ func (s *Session) Start() (string, error) {
 func (s *Session) valid() (bool, error) {
 
 	// check if is valid directory
-	stat, err := os.Stat(s.path)
+	stat, err := os.Stat(s.Path)
 	if !(err == nil && stat.IsDir()) {
 		return false, errors.New("path is not valid directory")
 	}
