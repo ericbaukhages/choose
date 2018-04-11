@@ -1,9 +1,5 @@
 package choose
 
-import (
-	"errors"
-)
-
 // Session holds all the stuff to start these sessions
 type Session struct {
 	Config  Config
@@ -15,8 +11,8 @@ type Session struct {
 func (s *Session) Start() (string, error) {
 	// TODO: convert potential partial path to full path
 
-	isValid, err := s.valid()
-	if !isValid {
+	err := s.valid()
+	if err != nil {
 		return "Session was invalid", err
 	}
 
@@ -51,12 +47,12 @@ func (s *Session) Start() (string, error) {
 	return "Session started successfully", nil
 }
 
-func (s *Session) valid() (bool, error) {
+func (s *Session) valid() error {
 
-	// check if is valid directory
-	err := ValidPath(s.Path)
+	// Make sure configuration is valid
+	err := s.Config.IsValid(s.Session, s.Path)
 	if err != nil {
-		return false, errors.New("path is not valid directory")
+		return err
 	}
 
 	// TODO: check if tmux session isn't already open
@@ -69,8 +65,8 @@ func (s *Session) valid() (bool, error) {
 
 	// out, err := runCommand(runArgs)
 	// if err != nil {
-	// 	return false, errors.New("tmux list-sessions command failed")
+	// 	return errors.New("tmux list-sessions command failed")
 	// }
 
-	return true, nil
+	return nil
 }

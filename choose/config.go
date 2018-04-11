@@ -2,6 +2,7 @@ package choose
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -63,4 +64,20 @@ func makeKeys(config map[string]string) []string {
 	sort.Strings(keys)
 
 	return keys
+}
+
+// IsValid is a function
+func (c *Config) IsValid(name string, path string) error {
+	// check if path is valid directory
+	stat, err := os.Stat(path)
+	if !(err == nil && stat.IsDir()) {
+		return fmt.Errorf("path is not valid directory")
+	}
+
+	// check if name already exists
+	if c.Values[name] != "" {
+		return fmt.Errorf("%s already exists", name)
+	}
+
+	return nil
 }
