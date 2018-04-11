@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"ebaukhages/choose/choose"
+
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -18,10 +20,46 @@ var rootCmd = &cobra.Command{
 	Long: `This project is a work in progress.
 
 I use this to encompass my scripting and project management tools
-used with tmux and vim.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+used with tmux and vim.
+
+If run with no options, the choosing UI will run.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		config := choose.Config{
+			Location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
+		}
+		config.Parse()
+
+		ui := choose.Interface{
+			Config: config,
+		}
+
+		name, err := ui.Run()
+		if err != nil {
+			fmt.Printf("Prompt failed: %v\n", err)
+			return
+		}
+
+		_ = name
+
+		path := config.Values[name]
+
+		if path == "" {
+			fmt.Printf("No session called: %s. Exiting.\n", name)
+			return
+		}
+
+		session := choose.Session{
+			Path:    path,
+			Session: name,
+			Config:  config,
+		}
+
+		_, err = session.Start()
+		if err != nil {
+			fmt.Printf("Session failed: %v\n", err)
+			return
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
