@@ -18,17 +18,24 @@ var openCmd = &cobra.Command{
 		}
 		config.Parse()
 
-		ui := choose.Interface{
-			Config: config,
-		}
+		var (
+			name string
+			err  error
+		)
 
-		name, err := ui.Run()
-		if err != nil {
-			fmt.Printf("Prompt failed: %v\n", err)
-			return
-		}
+		if len(args) == 1 {
+			name = args[0]
+		} else {
+			ui := choose.Interface{
+				Config: config,
+			}
+			name, err = ui.Run()
 
-		_ = name
+			if err != nil {
+				fmt.Printf("Prompt failed: %v\n", err)
+				return
+			}
+		}
 
 		path := config.Values[name]
 
@@ -45,7 +52,7 @@ var openCmd = &cobra.Command{
 
 		_, err = session.Start()
 		if err != nil {
-			fmt.Printf("Session failed %v\n", err)
+			fmt.Printf("Session failed: %v\n", err)
 			return
 		}
 	},
