@@ -2,7 +2,6 @@ package choose
 
 // Session holds all the stuff to start these sessions
 type Session struct {
-	Config  Config
 	Path    string
 	Session string
 }

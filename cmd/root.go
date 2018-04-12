@@ -51,7 +51,6 @@ If run with no options, the choosing UI will run.`,
 		session := choose.Session{
 			Path:    path,
 			Session: name,
-			Config:  config,
 		}
 
 		_, err = session.Start()

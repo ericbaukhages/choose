@@ -47,7 +47,6 @@ var openCmd = &cobra.Command{
 		session := choose.Session{
 			Path:    path,
 			Session: name,
-			Config:  config,
 		}
 
 		_, err = session.Start()
