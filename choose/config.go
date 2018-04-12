@@ -8,6 +8,8 @@ import (
 	"os"
 	"sort"
 	"strings"
+
+	homedir "github.com/mitchellh/go-homedir"
 )
 
 // Config stores configuration data as well as its location
@@ -78,6 +80,24 @@ func (c *Config) IsValid(name string, path string) error {
 	if c.Values[name] != "" {
 		return fmt.Errorf("%s already exists", name)
 	}
+
+	return nil
+}
+
+// Add a new session configuration
+func (c *Config) Add(name string, path string) error {
+	path, err := homedir.Expand(path)
+	if err != nil {
+		return err
+	}
+
+	err = c.IsValid(name, path)
+	if err != nil {
+		return err
+	}
+
+	c.keys = append(c.keys, name)
+	c.Values[name] = path
 
 	return nil
 }
