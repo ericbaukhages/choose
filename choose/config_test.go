@@ -1,6 +1,8 @@
 package choose
 
 import (
+	"os"
+	"reflect"
 	"testing"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -21,6 +23,36 @@ func TestAdd(t *testing.T) {
 
 	if !stringInSlice(name, config.keys) {
 		t.Errorf("\"%s\" was not saved in keys", name)
+	}
+}
+
+func TestSave(t *testing.T) {
+	testConfigFile := "test.config"
+
+	config := makeTestConfig()
+	config.Location = testConfigFile
+
+	err := config.Save()
+	if err != nil {
+		t.Errorf("Save failed: %v", err)
+	}
+
+	newConfig := Config{
+		Location: testConfigFile,
+	}
+	newConfig.Parse()
+
+	if !reflect.DeepEqual(config.keys, newConfig.keys) {
+		t.Errorf("New config keys are not equal to old config keys")
+	}
+
+	if !reflect.DeepEqual(config.Values, newConfig.Values) {
+		t.Errorf("New config values are not equal to old config values")
+	}
+
+	err = os.Remove(testConfigFile)
+	if err != nil {
+		t.Errorf("Unable to delete test config: %v", err)
 	}
 }
 

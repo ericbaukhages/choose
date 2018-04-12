@@ -101,3 +101,39 @@ func (c *Config) Add(name string, path string) error {
 
 	return nil
 }
+
+// Save a new configuration object
+func (c *Config) Save() error {
+	// create the file if it doesn't already exist
+	_, err := os.Stat(c.Location)
+	if os.IsNotExist(err) {
+		file, err := os.Create(c.Location)
+		if err != nil {
+			return err
+		}
+		file.Close()
+	}
+
+	// open the file
+	file, err := os.OpenFile(c.Location, os.O_RDWR, 0644)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// write config to file
+	for key, value := range c.Values {
+		_, err := file.WriteString(fmt.Sprintf("%s %s\n", key, value))
+		if err != nil {
+			return err
+		}
+	}
+
+	// save file
+	err = file.Sync()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
