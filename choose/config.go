@@ -122,8 +122,8 @@ func (c *Config) Save() error {
 	defer file.Close()
 
 	// write config to file
-	for key, value := range c.Values {
-		_, err := file.WriteString(fmt.Sprintf("%s %s\n", key, value))
+	for _, name := range c.keys {
+		_, err := file.WriteString(fmt.Sprintf("%s %s\n", name, c.Values[name]))
 		if err != nil {
 			return err
 		}
