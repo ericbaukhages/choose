@@ -1,5 +1,10 @@
 package choose
 
+import (
+	"fmt"
+	"strings"
+)
+
 // Session holds all the stuff to start these sessions
 type Session struct {
 	Path    string
@@ -47,25 +52,23 @@ func (s *Session) Start() (string, error) {
 }
 
 func (s *Session) valid() error {
+	// TODO: make sure path is valid
 
-	// Make sure configuration is valid
-	err := s.Config.IsValid(s.Session, s.Path)
-	if err != nil {
-		return err
+	listSessions := Command{
+		args: []string{
+			"tmux",
+			"list-sessions",
+			"-F",
+			"#S",
+		},
 	}
 
-	// TODO: check if tmux session isn't already open
-	// runArgs := []string{
-	// 	"tmux",
-	// 	"list-sessions",
-	// 	"-F",
-	// 	"#S",
-	// }
+	sessions, _ := listSessions.run()
+	lines := strings.Split(string(sessions), "\n")
 
-	// out, err := runCommand(runArgs)
-	// if err != nil {
-	// 	return errors.New("tmux list-sessions command failed")
-	// }
+	if StringInSlice(s.Session, lines) {
+		return fmt.Errorf("%s is already open", s.Session)
+	}
 
 	return nil
 }
