@@ -21,7 +21,7 @@ func TestAdd(t *testing.T) {
 		t.Errorf("\"%s\" was not saved in Values", name)
 	}
 
-	if !stringInSlice(name, config.keys) {
+	if !StringInSlice(name, config.keys) {
 		t.Errorf("\"%s\" was not saved in keys", name)
 	}
 }
@@ -54,15 +54,6 @@ func TestSave(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unable to delete test config: %v", err)
 	}
-}
-
-func stringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
 }
 
 func makeTestConfig() Config {

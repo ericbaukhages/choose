@@ -36,3 +36,13 @@ func CallClearInit() {
 		cmd.Run()
 	}
 }
+
+// StringInSlice finds if string is in []string
+func StringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
