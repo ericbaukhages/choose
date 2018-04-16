@@ -31,7 +31,7 @@ var newCmd = &cobra.Command{
 			name = args[0]
 			path = args[1]
 		} else {
-			fmt.Println("Insufficient arguments.")
+			cmd.Help()
 			return
 		}
 
