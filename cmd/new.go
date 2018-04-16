@@ -7,6 +7,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	openNewSession = false
+)
+
 // newCmd represents the new command
 var newCmd = &cobra.Command{
 	Use:   "new",
@@ -34,11 +38,25 @@ var newCmd = &cobra.Command{
 		err := config.Add(name, path)
 		if err != nil {
 			fmt.Printf("New session could not be added: %v\n", err)
+			return
 		}
 
 		err = config.Save()
 		if err != nil {
 			fmt.Printf("Project could not be saved: %v\n", err)
+			return
+		}
+
+		if openNewSession {
+			session := choose.Session{
+				Path:    config.Values[name],
+				Session: name,
+			}
+			_, err = session.Start()
+			if err != nil {
+				fmt.Printf("Sesssion failed %v\n", err)
+				return
+			}
 		}
 	},
 }
@@ -55,4 +73,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// newCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	newCmd.Flags().BoolVarP(&openNewSession, "open", "o", true, "Open new session after creation")
 }
