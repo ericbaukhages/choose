@@ -24,8 +24,13 @@ used with tmux and vim.
 
 If run with no options, the choosing UI will run.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		configFileName, err := homedir.Expand("~/.tmux.sessions.log")
+		if err != nil {
+			fmt.Printf("Prompt failed: %v\n", err)
+		}
+
 		config := choose.Config{
-			Location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
+			Location: configFileName,
 		}
 		config.Parse()
 

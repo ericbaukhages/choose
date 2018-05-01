@@ -4,6 +4,7 @@ import (
 	"ebaukhages/choose/choose"
 	"fmt"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 )
 
@@ -17,8 +18,13 @@ var newCmd = &cobra.Command{
 	Short: "Creates a new tmux session",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		configFileName, err := homedir.Expand("~/.tmux.sessions.log")
+		if err != nil {
+			fmt.Printf("Prompt failed: %v\n", err)
+		}
+
 		config := choose.Config{
-			Location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
+			Location: configFileName,
 		}
 		config.Parse()
 
@@ -35,7 +41,7 @@ var newCmd = &cobra.Command{
 			return
 		}
 
-		err := config.Add(name, path)
+		err = config.Add(name, path)
 		if err != nil {
 			fmt.Printf("New session could not be added: %v\n", err)
 			return

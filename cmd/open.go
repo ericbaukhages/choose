@@ -4,6 +4,7 @@ import (
 	"ebaukhages/choose/choose"
 	"fmt"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 )
 
@@ -13,15 +14,17 @@ var openCmd = &cobra.Command{
 	Short: "Open an existing project if possible",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		configFileName, err := homedir.Expand("~/.tmux.sessions.log")
+		if err != nil {
+			fmt.Printf("Prompt failed: %v\n", err)
+		}
+
 		config := choose.Config{
-			Location: "/Users/ebaukhages/Documents/scripts/tmux.sessions.log",
+			Location: configFileName,
 		}
 		config.Parse()
 
-		var (
-			name string
-			err  error
-		)
+		var name string
 
 		if len(args) == 1 {
 			name = args[0]
