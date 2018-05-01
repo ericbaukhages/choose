@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"ebaukhages/choose/choose"
 	"fmt"
+
+	"github.com/febvigrail/choose/choose"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"

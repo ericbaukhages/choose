@@ -1,6 +1,6 @@
 package main
 
-import "ebaukhages/choose/cmd"
+import "github.com/febvigrail/choose/cmd"
 
 func main() {
 	cmd.Execute()
