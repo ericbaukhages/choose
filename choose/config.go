@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/olekukonko/tablewriter"
 )
 
 // Config stores configuration data as well as its location
@@ -134,6 +135,25 @@ func (c *Config) Save() error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+// Print session list
+func (c *Config) Print() error {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Name", "Path"})
+
+	home, err := homedir.Expand("~")
+	if err != nil {
+		return err
+	}
+
+	for _, v := range c.keys {
+		table.Append([]string{v, strings.Replace(c.Values[v], home, "~", 1)})
+	}
+
+	table.Render()
 
 	return nil
 }
