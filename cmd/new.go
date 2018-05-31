@@ -15,9 +15,10 @@ var (
 
 // newCmd represents the new command
 var newCmd = &cobra.Command{
-	Use:   "new",
-	Short: "Creates a new tmux session",
-	Long:  ``,
+	Use:     "new",
+	Short:   "Creates a new tmux session",
+	Long:    ``,
+	Aliases: []string{"add"},
 	Run: func(cmd *cobra.Command, args []string) {
 		configFileName, err := homedir.Expand("~/.tmux.sessions.log")
 		if err != nil {
