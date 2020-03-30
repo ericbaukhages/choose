@@ -7,7 +7,7 @@ Project space management tool utilizing `tmux` and Go.
 You must have `tmux` installed.
 
 ```bash
-go get github.com/febvigrail/choose
+go get github.com/ericbaukhages/choose
 touch ~/.tmux.sessions.log
 ```
 

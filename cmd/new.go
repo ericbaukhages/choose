@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/febvigrail/choose/choose"
+	"github.com/ericbaukhages/choose/choose"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
