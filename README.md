@@ -6,8 +6,23 @@ Project space management tool utilizing `tmux` and Go.
 
 You must have `tmux` installed.
 
+### From Source
+
+Clone the repository and build:
+
 ```bash
-go get github.com/ericbaukhages/choose
+git clone https://github.com/ericbaukhages/choose.git
+cd choose
+go build -o choose-tool
+touch ~/.tmux.sessions.log
+```
+
+Note: The binary must be built with a custom name (e.g., `choose-tool`) due to a directory naming conflict.
+
+### Using go install
+
+```bash
+go install github.com/ericbaukhages/choose@latest
 touch ~/.tmux.sessions.log
 ```
 

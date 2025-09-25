@@ -142,7 +142,7 @@ func (c *Config) Save() error {
 // Print session list
 func (c *Config) Print() error {
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"Name", "Path"})
+	table.Header("Name", "Path")
 
 	home, err := homedir.Expand("~")
 	if err != nil {
@@ -150,10 +150,16 @@ func (c *Config) Print() error {
 	}
 
 	for _, v := range c.keys {
-		table.Append([]string{v, strings.Replace(c.Values[v], home, "~", 1)})
+		err := table.Append([]string{v, strings.Replace(c.Values[v], home, "~", 1)})
+		if err != nil {
+			return err
+		}
 	}
 
-	table.Render()
+	err = table.Render()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
